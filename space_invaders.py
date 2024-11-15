@@ -247,19 +247,23 @@ def game():
                 joystick = pygame.joystick.Joystick(event.device_index)
                 joysticks.append(joystick)
             global game_over, won
-            if not game_over:
+            if not game_over and not won:
                 if event.type == ALIEN_LASER:
                     alien_fire()
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_SPACE:
-                        fire()
-                if event.type == pygame.JOYBUTTONDOWN:
-                    if event.button == 0:
-                        fire()
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                    fire()
+                if event.type == pygame.JOYBUTTONDOWN and event.button == 0:
+                    fire()
             elif won and event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                 reset_game()
                 won = False
+            elif won and event.type == pygame.JOYBUTTONDOWN and event.button == 0:
+                reset_game()
+                won = False
             elif game_over and event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                reset_game()
+                game_over = False
+            elif game_over and event.type == pygame.JOYBUTTONDOWN and event.button == 0:
                 reset_game()
                 game_over = False
         update()
